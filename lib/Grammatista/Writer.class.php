@@ -6,8 +6,6 @@ abstract class GrammatistaWriter implements IGrammatistaWriter
 	
 	public function __construct(array $options = array())
 	{
-		$this->options['comment_prefix'] = 'tc:';
-		
 		$this->options = array_merge($this->options, $options);
 	}
 	
