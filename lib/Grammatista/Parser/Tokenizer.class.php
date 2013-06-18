@@ -76,7 +76,10 @@ abstract class GrammatistaParserTokenizer extends GrammatistaParser
 			$i++;
 			if(is_array($token)) {
 				if(in_array($token[0], $this->getCommentTokenDefinitions())) {
-					if(preg_match('/^((\/\*+)|#+|\/{2,})\s*(' . preg_quote($this->options['comment_prefix']) . '\s*.+)\s*(?(2)\*\/)$/ms', $token[1], $matches)) {
+					if(preg_match('/^((\/\*+)|#+|\/{2,})\s*(' . preg_quote($this->options['ignore_comment']) . ')\s*(?(2)\*\/)$/ms', $token[1], $matches)) {
+						// ignore comment
+						$token[1] = trim($matches[3]);
+					} elseif(preg_match('/^((\/\*+)|#+|\/{2,})\s*(' . preg_quote($this->options['comment_prefix']) . '\s*.+)\s*(?(2)\*\/)$/ms', $token[1], $matches)) {
 						// translation comment
 						$token[1] = trim($matches[3]);
 					} else {
@@ -281,11 +284,15 @@ abstract class GrammatistaParserTokenizer extends GrammatistaParser
 		$tokens = $this->tokenize($entity->content);
 		
 		$lastComment = null;
+		$skipNext = false;
 		
 		for($i = 0; $i < count($tokens); $i++) {
 			
 			if(isset($tokens[$i][0]) && in_array($tokens[$i][0], $this->getCommentTokenDefinitions())) {
-				if(preg_match('/^' . preg_quote($this->options['comment_prefix']) . '\s*(.+)$/', $tokens[$i][1], $matches)) {
+				if($tokens[$i][1] == $this->options['ignore_comment']) {
+					// ignore comment? skip next info
+					$skipNext = true;
+				} elseif(preg_match('/^' . preg_quote($this->options['comment_prefix']) . '\s*(.+)$/', $tokens[$i][1], $matches)) {
 					// translation comment? remember it
 					$lastComment = $matches[1];
 				}
@@ -293,10 +300,14 @@ abstract class GrammatistaParserTokenizer extends GrammatistaParser
 			
 			// check if token (and those following) match one of the patterns
 			if(($pattern = $this->compareToken($tokens, $i)) !== false) {
-				$info = $this->extractInfo($entity, $tokens, $i, $this->patterns[$pattern]);
-				$info->comment = $lastComment ? $lastComment : null;
-				
-				$retval[] = $info;
+				if(!$skipNext) {
+					$info = $this->extractInfo($entity, $tokens, $i, $this->patterns[$pattern]);
+					$info->comment = $lastComment ? $lastComment : null;
+					
+					$retval[] = $info;
+				} else {
+					$skipNext = false;
+				}
 				
 				// $retval[] = new GrammatistaTranslatable(array(
 				// 	'singular_message' => $info['singular_message'],
