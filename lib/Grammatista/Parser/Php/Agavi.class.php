@@ -5,7 +5,7 @@ class GrammatistaParserPhpAgavi extends GrammatistaParserPhp
 	public function __construct(array $options = array())
 	{
 		$this->options = array(
-			'php.patterns' => array(
+			'tokenizer.patterns' => array(
 				
 				'$tm->__(declare(singular_message), declare(plural_message), declare(amount))' => array(
 					'warn' => true,

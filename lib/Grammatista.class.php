@@ -30,6 +30,7 @@ class Grammatista
 		'GrammatistaParserPcre'               => 'Grammatista/Parser/Pcre.class.php',
 		'GrammatistaParserPcreSmarty'         => 'Grammatista/Parser/Pcre/Smarty.class.php',
 		'GrammatistaParserPcreSmartySlv3'     => 'Grammatista/Parser/Pcre/Smarty/Slv3.class.php',
+		'GrammatistaParserTokenizer'          => 'Grammatista/Parser/Tokenizer.class.php',
 		'GrammatistaParserPhp'                => 'Grammatista/Parser/Php.class.php',
 		'GrammatistaParserPhpAgavi'           => 'Grammatista/Parser/Php/Agavi.class.php',
 		'GrammatistaParserXml'                => 'Grammatista/Parser/Xml.class.php',
