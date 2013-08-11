@@ -27,6 +27,7 @@ class Grammatista
 		'GrammatistaLoggerShell'              => 'Grammatista/Logger/Shell.class.php',
 		'GrammatistaParser'                   => 'Grammatista/Parser.class.php',
 		'GrammatistaParserDwoo'               => 'Grammatista/Parser/Dwoo.class.php',
+		'GrammatistaParserJavascript'         => 'Grammatista/Parser/Javascript.class.php',
 		'GrammatistaParserPcre'               => 'Grammatista/Parser/Pcre.class.php',
 		'GrammatistaParserPcreSmarty'         => 'Grammatista/Parser/Pcre/Smarty.class.php',
 		'GrammatistaParserPcreSmartySlv3'     => 'Grammatista/Parser/Pcre/Smarty/Slv3.class.php',
