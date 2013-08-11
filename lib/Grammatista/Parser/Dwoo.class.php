@@ -91,17 +91,27 @@ class GrammatistaParserDwoo extends GrammatistaParser
 	
 	public function handles(GrammatistaEntity $entity)
 	{
-		return $entity->type == 'tpl';
+		$retval = $entity->type == 'tpl';
+		
+		if($retval) {
+			Grammatista::dispatchEvent('grammatista.parser.handles', array('entity' => $entity));
+		}
+		
+		return $retval;
 	}
 	
 	public function parse(GrammatistaEntity $entity)
 	{
 		$this->entity = $entity;
 		
+		Grammatista::dispatchEvent('grammatista.parser.parsing', array('entity' => $entity));
+		
 		$template = new Dwoo_Template_String($entity->content, 0);
 		$template->forceCompilation();
 		$this->dwoo->setTemplate($template);
 		$template->getCompiledTemplate($this->dwoo);
+		
+		Grammatista::dispatchEvent('grammatista.parser.parsed', array('entity' => $entity));
 		
 		$this->entity = null;
 		
